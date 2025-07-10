@@ -727,9 +727,10 @@ def RequestService(credential, user_addr):
 
 	str_public_m = [str(public_m[i]) for i in range(len(public_m))]
 	encoded_disclosed_attr = encode_attributes(disclose_attr, disclose_attr_enc)
-	# tf = VerifyCred(params, aggregate_vk, Theta, disclose_index, encoded_disclosed_attr, encoded_public_m)
-	# print("Verify Cred : ")
-	# print(tf)
+	print(params, aggregate_vk, Theta, disclose_index, encoded_disclosed_attr, encoded_public_m)
+	tf = VerifyCred(params, aggregate_vk, Theta, disclose_index, encoded_disclosed_attr, encoded_public_m)
+	print("Verify Cred : ")
+	print(tf)
 	
 	tx_hash = verify_contract.functions.VerifyCred(title, send_theta, str_public_m, send_Aw, send_aggr, disclose_index, str_disclose_attr, disclose_attr_enc, _timestamp).transact({'from':user_addr})
 	print("Transaction hash for VerifyCred: ", tx_hash.hex())

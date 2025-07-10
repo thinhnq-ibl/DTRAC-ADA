@@ -270,6 +270,7 @@ w3 = Web3(Web3.HTTPProvider(args.rpc_endpoint, request_kwargs = {'timeout' : 300
 # All the TTP system parameters and Aggregated Validators Key
 
 tf = json.load(open('./build/contracts/Params.json'))
+print("params_address",params_address)
 params_address = Web3.to_checksum_address(params_address)
 params_contract = w3.eth.contract(address = params_address, abi = tf['abi'])
 
