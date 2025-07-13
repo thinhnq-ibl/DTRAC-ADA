@@ -1,43 +1,37 @@
-from py_ecc.bls12_381 import *
 from TTP import *
-from hashlib import sha256 
 from binascii import hexlify, unhexlify
+from py_ecc.bls12_381 import * 
+from hashlib import sha256
 import random
 import time
+# from py_ecc.bls.point_compression import (
+#     compress_G1,
+#     decompress_G1,
+#     compress_G2,
+#     decompress_G2,
+#     G1Uncompressed
+# )
+# from py_ecc.fields import (
+#     optimized_bls12_381_FQ as FQO,
+#     optimized_bls12_381_FQO2 as FQO2,
+#     optimized_bls12_381_FQ12 as FQO12,
+#     optimized_bls12_381_FQP as FQPO,
+# )
 
-from py_ecc.bls.point_compression import (
-    compress_G1,
-    decompress_G1,
-    compress_G2,
-    decompress_G2,
-    G1Uncompressed
-)
-from py_ecc.fields import (
-    optimized_bls12_381_FQ as FQO,
-    optimized_bls12_381_FQ2 as FQO2,
-    optimized_bls12_381_FQ12 as FQO12,
-    optimized_bls12_381_FQP as FQPO,
-)
+# from py_ecc.bls.hash import (
+#     i2osp,
+#     os2ip
+# )
 
-from py_ecc.bls.hash import (
-    i2osp,
-    os2ip
-)
+def FindYforX(x) :
+    beta = (pow(x, 3, field_modulus) + 4) % field_modulus
+    y = pow(beta, (field_modulus + 1) //4, field_modulus)
+    return (beta, y)
 
-# def FindYforX(x) :
-#     beta = (pow(x, 3, field_modulus) + 3) % field_modulus
-#     y = pow(beta, (field_modulus + 1) //4, field_modulus)
-#     return (beta, y)
-
-# def hashG1(byte_string):
-#     beta = 0
-#     y = 0
-#     x = int.from_bytes(byte_string, "big") % curve_order
-#     while True :
-#         (beta, y) = FindYforX(x)
-#         if beta == pow(y, 2, field_modulus):
-#             return(FQ(x), FQ(y))
-#         x = (x + 1) % field_modulus
+def hashG1(byte_string):
+    h = sha256(byte_string).digest()
+    x = int.from_bytes(h, 'big') % curve_order
+    return multiply(G1, x)
 
 def setup(q=1, AC = "h"):
     assert q > 0
@@ -69,32 +63,32 @@ def to_binary256(point) :
     if isinstance(point, int):
         return point.to_bytes(48, 'big')
     if isinstance(point[0], FQ):
-        point1 = point[0].n.to_bytes(48, 'big')
-        point2 = point[1].n.to_bytes(48, 'big')
-        return sha256(point1+point2).digest()
-    if isinstance(point[0], FQ2):
-        point1 = point[0].coeffs[0].n.to_bytes(48, 'big') + point[0].coeffs[1].n.to_bytes(48, 'big')
-        point2 = point[1].coeffs[0].n.to_bytes(48, 'big') + point[1].coeffs[1].n.to_bytes(48, 'big')
-        return sha256(point1+point2).digest()
+        # point1 = point[0].n.to_bytes(48, 'big')
+        # point2 = point[1].n.to_bytes(48, 'big')
+        # return sha256(point1+point2).digest()
+        g1_point: G1Uncompressed = (FQO(point[0].n),FQO(point[1].n), FQO(1))
+        return sha256(i2osp(compress_G1(g1_point),48)).digest()
+    if isinstance(point[0], FQO2):
+        g2_point = (FQO2((point[0].coeffs[0].n, point[0].coeffs[1].n)), 
+              FQO2((point[1].coeffs[0].n, point[1].coeffs[1].n)),
+              FQO2.one()
+              )
+        g2_point_compressed = compress_G2(g2_point)
+        return sha256(i2osp(g2_point_compressed[0],48)+i2osp(g2_point_compressed[1],48)).digest()
 
-# def to_binary256(point) :
-#     if isinstance(point, str):
-#         return sha256(point.encode("utf8").strip()).digest()
-#     if isinstance(point, int):
-#         return point.to_bytes(48, 'big')
-#     if isinstance(point[0], FQ):
-#         # point1 = point[0].n.to_bytes(48, 'big')
-#         # point2 = point[1].n.to_bytes(48, 'big')
-#         # return sha256(point1+point2).digest()
-#         g1_point: G1Uncompressed = (FQO(point[0].n),FQO(point[1].n), FQO(1))
-#         return sha256(i2osp(compress_G1(g1_point),48)).digest()
-#     if isinstance(point[0], FQO2):
-#         g2_point = (FQO2((point[0].coeffs[0].n, point[0].coeffs[1].n)), 
-#               FQO2((point[1].coeffs[0].n, point[1].coeffs[1].n)),
-#               FQO2.one()
-#               )
-#         g2_point_compressed = compress_G2(g2_point)
-#         return sha256(i2osp(g2_point_compressed[0],48)+i2osp(g2_point_compressed[1],48)).digest()
+def compress_G1_cd(point):
+    """Compress a G1 point to bytes"""
+    g1_point: G1Uncompressed = (FQO(point[0].n), FQO(point[1].n), FQO(1))
+    return i2osp(compress_G1(g1_point), 48).hex()
+
+def compress_G2_cd(point):
+    """Compress a G2 point to bytes"""
+    g2_point = (FQO2((point[0].coeffs[0].n, point[0].coeffs[1].n)), 
+              FQO2((point[1].coeffs[0].n, point[1].coeffs[1].n)),
+              FQO2.one()
+              )
+    g2_point_compressed = compress_G2(g2_point)
+    return (i2osp(g2_point_compressed[0], 48) + i2osp(g2_point_compressed[1], 48)).hex()
 
 def to_challenge(elements):
     _list = [to_binary256(x) for x in elements]

@@ -1,6 +1,25 @@
 from py_ecc.bls12_381 import * 
 from hashlib import sha256
 import random
+import time
+from py_ecc.bls.point_compression import (
+    compress_G1,
+    decompress_G1,
+    compress_G2,
+    decompress_G2,
+    G1Uncompressed
+)
+from py_ecc.fields import (
+    optimized_bls12_381_FQ as FQO,
+    optimized_bls12_381_FQ2 as FQO2,
+    optimized_bls12_381_FQ12 as FQO12,
+    optimized_bls12_381_FQP as FQPO,
+)
+
+from py_ecc.bls.hash import (
+    i2osp,
+    os2ip
+)
 
 def genRandom():
 	o = int(curve_order)
@@ -12,14 +31,9 @@ def FindYforX(x) :
     return (beta, y)
 
 def hashG1(byte_string):
-    beta = 0
-    y = 0
-    x = int.from_bytes(byte_string, "big") % curve_order
-    while True :
-        (beta, y) = FindYforX(x)
-        if beta == pow(y, 2, field_modulus) :
-            return (FQ(x), FQ(y))
-        x = (x + 1) % field_modulus
+    h = sha256(byte_string).digest()
+    x = int.from_bytes(h, 'big') % curve_order
+    return multiply(G1, x)
 
 def ttp_setup(q, ttp):
 	assert q > 0
@@ -61,8 +75,32 @@ def toChallenge(element_list):
 	return (int.from_bytes(Chash, "big"))
 
 def SHA256(element):
-	return sha256((element[0].n).to_bytes(48, 'big') + (element[1].n).to_bytes(48, 'big')).digest()
+    # return sha256((element[0].n).to_bytes(48, 'big') + (element[1].n).to_bytes(48, 'big')).digest()
+    g1_point: G1Uncompressed = (FQO(element[0].n),FQO(element[1].n), FQO(1))
+    return sha256(i2osp(compress_G1(g1_point),48)).digest()
+def get_g1_bytes(point):
+    commitUncompress = (FQO(point[0].n), FQO(point[1].n), FQO(1))
+    return i2osp(compress_G1(commitUncompress),48).hex()
 
+def get_g2_bytes(point):
+    commit2Uncompress = (FQO2([point[0].coeffs[0].n, point[0].coeffs[1].n]), FQO2([point[1].coeffs[0].n, point[1].coeffs[1].n]), FQO2.one())
+    commit2Compress = compress_G2(commit2Uncompress)
+    return i2osp(commit2Compress[0], 48).hex() + i2osp(commit2Compress[1], 48).hex()
+
+def get_list_g1_bytes(points):
+    ret = []
+    for point in points:
+        commitUncompress = (FQO(point[0].n), FQO(point[1].n), FQO(1))
+        ret.append(i2osp(compress_G1(commitUncompress),48).hex())
+    return ret
+
+def get_list_g2_bytes(points):
+    ret = []
+    for point in points:
+        commit2Uncompress = (FQO2([point[0].coeffs[0].n, point[0].coeffs[1].n]), FQO2([point[1].coeffs[0].n, point[1].coeffs[1].n]), FQO2.one())
+        commit2Compress = compress_G2(commit2Uncompress)
+        ret.append(i2osp(commit2Compress[0], 48).hex() + i2osp(commit2Compress[1], 48).hex())
+    return ret
 	
 def GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm):
 	_, g, o, hs= params
@@ -79,19 +117,13 @@ def GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm):
 		Aw.append(tmp)
 		comm_list.append(prev_vcerts[i][0])
 
-	
 	_tmp = multiply(g, total_wm[len(prev_vcerts)][-1])
-	print("_tmp1", _tmp)
 	_tmp = add(_tmp, multiply(hs[0], total_wm[len(prev_vcerts)][0]))
-	print("_tmp2", _tmp)
 	Aw.append(_tmp)
 	comm_list.append(comm)
 
 	element_list = [g] + Aw + comm_list + hs 
-	print("Aw", Aw)
-
 	c = toChallenge(element_list) % o
-	print("genc", c)
 	total_rm = [[(total_wm[i][j] - c*all_enc_attr[i][j]) % o for j in range(len(total_wm[i]))] for i in range(len(total_wm))]
 	return (c, total_rm)
 
@@ -103,41 +135,32 @@ def VerifyZKPoK(params, prev_params, prev_vcerts, encoded_attr, comm, ZKPoK):
 
 	_, g, o, hs= params
 
-	tmp_comm = multiply(hs[1], encoded_attr[0])
+	# tmp_comm = multiply(hs[1], encoded_attr[0])
 
-	for i in range(2, len(hs)):
-		tmp_comm = add(tmp_comm, multiply(hs[i], encoded_attr[i-1]))
-	tmp_comm = add(comm, neg(tmp_comm))
+	# for i in range(2, len(hs)):
+	# 	tmp_comm = add(tmp_comm, multiply(hs[i], encoded_attr[i-1]))
+	# tmp_comm = add(comm, neg(tmp_comm))
 
-	comm_list = []
-	Aw = []
-	for i in range(len(prev_vcerts)):
-		(_, ttp_g, _, ttp_hs) = prev_params[i]
-		tmp = multiply(ttp_g, total_rm[i][-1])
-		for j in range(len(total_rm[i]) - 1):
-			tmp = add(tmp, multiply(ttp_hs[j], total_rm[i][j]))
-		tmp = add(tmp, multiply(prev_vcerts[i][0], c))
-		Aw.append(tmp)
-		comm_list.append(prev_vcerts[i][0])
+	# comm_list = []
+	# Aw = []
+	# for i in range(len(prev_vcerts)):
+	# 	(_, ttp_g, _, ttp_hs) = prev_params[i]
+	# 	tmp = multiply(ttp_g, total_rm[i][-1])
+	# 	for j in range(len(total_rm[i]) - 1):
+	# 		tmp = add(tmp, multiply(ttp_hs[j], total_rm[i][j]))
+	# 	tmp = add(tmp, multiply(prev_vcerts[i][0], c))
+	# 	Aw.append(tmp)
+	# 	comm_list.append(prev_vcerts[i][0])
 
-	
+	# _, g, o, hs= params
+	# _tmp = multiply(g, total_rm[len(prev_vcerts)][-1])
+	# _tmp = add(_tmp, multiply(hs[0], total_rm[len(prev_vcerts)][0]))
+	# _tmp = add(_tmp, multiply(tmp_comm,c))
+	# Aw.append(_tmp)
+	# comm_list.append(comm)
 
-	_, g, o, hs= params
-	_tmp = multiply(g, total_rm[len(prev_vcerts)][-1])
-	print("_tmp3", _tmp)
-	_tmp = add(_tmp, multiply(hs[0], total_rm[len(prev_vcerts)][0]))
-	print("_tmp4", _tmp)
-	_tmp = add(_tmp, multiply(tmp_comm,c))
-	print("_tmp5", _tmp)
-	Aw.append(_tmp)
-	comm_list.append(comm)
-
-	element_list = [g]+ Aw + comm_list + hs
-	
-	print("Aw_new", Aw)
-	
-	print("old c", c)
-	print ("new C",toChallenge(element_list) % o)
+	# element_list = [g]+ Aw + comm_list + hs
+	# return (c == toChallenge(element_list) % o)
 	return True
 
 def SignCommitment(params, sk, comm):
@@ -180,20 +203,29 @@ def modInverse(a, m):
 def VerifyVcerts(params, pk, sign, digest):
 	return do_ecdsa_verify(pk, sign, digest)
 
+def get_int_digest(params, comm):
+    G, g, o, hs = params
+    digest = SHA256(comm)
+    int_digest = int.from_bytes(digest, "big") % o
+    return int_digest
+
 def do_ecdsa_sign(sk, digest):
-	r = 0
-	s = 0
-	o = int(curve_order)
-	int_digest = int.from_bytes(digest, "big") % o
-	while r == 0 or s==0 :
-		k = random.randint(2, o)
-		p1 = multiply(G1, k)
-		r = p1[0].n
-		s = (modInverse(k, o) * (int_digest + ((sk * r) % o)) ) %o
-	return (r, s)
+    r = 0
+    s = 0
+    o = int(curve_order)
+    int_digest = int.from_bytes(digest, "big") % o
+    while r == 0 or s==0 :
+        k = random.randint(2, o)
+        p1 = multiply(G1, k)
+        r = p1[0].n
+        r_g1 = i2osp(compress_G1((FQO(p1[0].n),
+                              FQO(p1[1].n), 
+                              FQO(1))),48).hex()
+        s = (modInverse(k, o) * (int_digest + ((sk * r) % o)) ) %o
+    return (r, s, r_g1)
 
 def do_ecdsa_verify(pk, sign, digest):
-	(r, s) = sign
+	(r, s, r_g1) = sign
 	o = int(curve_order)
 	int_digest = int.from_bytes(digest, "big") % o
 	s1 = modInverse(s, o)
