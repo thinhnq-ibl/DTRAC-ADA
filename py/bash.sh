@@ -101,7 +101,7 @@ gnome-terminal --title="Opener 1" -- bash -c "source $VENV_ACTIVATE && $command1
 gnome-terminal --title="Opener 2" -- bash -c "source $VENV_ACTIVATE && $command12; exec bash"
 gnome-terminal --title="Opener 3" -- bash -c "source $VENV_ACTIVATE && $command13; exec bash"
 
-sleep 15
+sleep 10
 
 # Use extracted variable Verify
 #command14="python3 SP.py --title \"Loan Service\" --name Bank --address 0xB1A0d85CFeA6ce282729adb7e66CD69f57DC3245 --verify-address '$Verify' --rpc-endpoint \"http://127.0.0.1:7545\" --accepts \"Loan Credential\""
@@ -110,7 +110,7 @@ sleep 15
 # gnome-terminal --title="Service Provider" -- bash -c "source $VENV_ACTIVATE && $command14 < SP_input.txt; exec bash"
 # gnome-terminal --title="Service Provider" -- bash -c "source $VENV_ACTIVATE && $command14; exec bash"
 
-sleep 15
+# sleep 15
 
 #command15='python3 User.py --unique-name user1 --address 0x1A1684c3027eA12046155013BfC5518C65dD5943 --rpc-endpoint "http://127.0.0.1:7545"'
 # Uncomment one of the following if needed, ensuring venv activation
