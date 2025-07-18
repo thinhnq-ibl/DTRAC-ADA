@@ -1,4 +1,4 @@
-from py_ecc.bls12_381 import * 
+from py_ecc.bn128 import * 
 from hashlib import sha256
 import random
 
@@ -7,7 +7,7 @@ def genRandom():
 	return random.randint(2, o)
 
 def FindYforX(x) :
-    beta = (pow(x, 3, field_modulus) + 4) % field_modulus
+    beta = (pow(x, 3, field_modulus) + 3) % field_modulus
     y = pow(beta, (field_modulus + 1) //4, field_modulus)
     return (beta, y)
 
@@ -61,7 +61,7 @@ def toChallenge(element_list):
 	return (int.from_bytes(Chash, "big"))
 
 def SHA256(element):
-	return sha256((element[0].n).to_bytes(48, 'big') + (element[1].n).to_bytes(48, 'big')).digest()
+	return sha256((element[0].n).to_bytes(32, 'big') + (element[1].n).to_bytes(32, 'big')).digest()
 
 	
 def GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm):

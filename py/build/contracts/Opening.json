@@ -6857,12 +6857,12 @@
     "1752381653052": {
       "events": {},
       "links": {},
-      "address": "0x54342dbAe35B59AE8Df583d5532eCe22105F589A",
-      "transactionHash": "0xf28019cb7c76ac1d72f42b464e69cf10f89bb9744a804f9a0bb7fb5d7e10823a"
+      "address": "0xdAA0682698bA12Fe25e97C9Ea366405b96b31c2e",
+      "transactionHash": "0x1c9ddc90f8fcd0f3ccb70520a08d00e8da8866e28a40d85376063ef127322071"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-07-13T09:51:16.258Z",
+  "updatedAt": "2025-07-14T08:16:27.521Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

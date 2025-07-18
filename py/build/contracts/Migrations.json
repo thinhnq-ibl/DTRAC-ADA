@@ -1748,12 +1748,12 @@
     "1752381653052": {
       "events": {},
       "links": {},
-      "address": "0xcD571CB05eb2f4b748CA35a175Be1a034f4057db",
-      "transactionHash": "0x369703b3a880efd0892d3504a406d1256efe009fd59876135be05c69bb88f8bd"
+      "address": "0x56e3ABC8EEaAaa22d1E951610feFe8ad1a35121b",
+      "transactionHash": "0x891e10cdf7e9ee6908d368001631a7ada82e54c48a6f6513c59fcc6adce1b4f2"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-07-13T09:51:16.262Z",
+  "updatedAt": "2025-07-14T08:16:27.525Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

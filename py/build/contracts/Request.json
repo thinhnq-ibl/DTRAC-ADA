@@ -62285,15 +62285,15 @@
     "1752381653052": {
       "events": {},
       "links": {
-        "G": "0xAE2EF7fFfE5616743ABDA860dbe8ada8887f4ca4",
-        "BN256G2": "0xD55b224070c85365328Ea561099ddB3c93454B1e"
+        "G": "0x75DE851ffEe23f8B775281b5159dae33Fc7614FA",
+        "BN256G2": "0x96a260554bE29C2cAda04102751C130F555Ae827"
       },
-      "address": "0xA0E81E8507018A0862c4186D22fA4825686c9F1D",
-      "transactionHash": "0xdb0b0dfba800da3c5e96ce887fedefe0dc5c7e1cb8e7c922ef257b5b538d8f69"
+      "address": "0xF24870c1A25410A2669E7F11CA6be5a59996f361",
+      "transactionHash": "0x3db531d8ded7d5af3bbfa231072b5386fb072903a78f417a7e41f66a2f5f1681"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-07-13T09:51:16.214Z",
+  "updatedAt": "2025-07-14T08:16:27.479Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

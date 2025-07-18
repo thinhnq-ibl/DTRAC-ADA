@@ -18886,12 +18886,12 @@
     "1752381653052": {
       "events": {},
       "links": {},
-      "address": "0xD55b224070c85365328Ea561099ddB3c93454B1e",
-      "transactionHash": "0x2fa30a9fe00318bb7d6de325d3d66558eb1bcacd6ce5a873a4996323a1a25ee8"
+      "address": "0x96a260554bE29C2cAda04102751C130F555Ae827",
+      "transactionHash": "0x83f826ea18b50a69db5627204d39c70200c00b02299d8b397680f97b54bf47c8"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-07-13T09:51:16.195Z",
+  "updatedAt": "2025-07-14T08:16:27.461Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

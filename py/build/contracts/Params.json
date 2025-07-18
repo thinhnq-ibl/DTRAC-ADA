@@ -26905,12 +26905,12 @@
     "1752381653052": {
       "events": {},
       "links": {},
-      "address": "0x5c35b89eDE0e8306Fd69Db6AE91ADcE0D13b9429",
-      "transactionHash": "0xbaabe16df461214b28f98c5223df7c4cf54f610a0bc03922a02ba1936a617395"
+      "address": "0x5C80Cafdd3F10d5Bac2FdD5cb80617B4DaFa430b",
+      "transactionHash": "0xba3b3808613ed91569af4be808403912fe824f53b113e9af47d2989cf30ea0a0"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-07-13T09:51:16.234Z",
+  "updatedAt": "2025-07-14T08:16:27.497Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

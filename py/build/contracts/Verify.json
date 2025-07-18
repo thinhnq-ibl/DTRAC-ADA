@@ -39092,15 +39092,15 @@
     "1752381653052": {
       "events": {},
       "links": {
-        "G": "0xAE2EF7fFfE5616743ABDA860dbe8ada8887f4ca4",
-        "BN256G2": "0xD55b224070c85365328Ea561099ddB3c93454B1e"
+        "G": "0x75DE851ffEe23f8B775281b5159dae33Fc7614FA",
+        "BN256G2": "0x96a260554bE29C2cAda04102751C130F555Ae827"
       },
-      "address": "0x967F4Af2F036487E41988712a8b55E0C1068f31B",
-      "transactionHash": "0x1538cffbe1a0db44e46fbc6ffe10ae1aa004b1b5934c8ffda4e793ab30f7c037"
+      "address": "0xf78dAFe6AB46BC0F62DB0b26578cB7aFaaaA190E",
+      "transactionHash": "0x15a0a92e881a5af514a3f531a98610c9931242a4feca31c4713f2b1ff54c4292"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-07-13T09:51:16.247Z",
+  "updatedAt": "2025-07-14T08:16:27.510Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

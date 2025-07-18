@@ -1,4 +1,4 @@
-from py_ecc.bls12_381 import *
+from py_ecc.bn128 import *
 from TTP import *
 from hashlib import sha256 
 from binascii import hexlify, unhexlify
@@ -67,24 +67,24 @@ def to_binary256(point) :
     if isinstance(point, str):
         return sha256(point.encode("utf8").strip()).digest()
     if isinstance(point, int):
-        return point.to_bytes(48, 'big')
+        return point.to_bytes(32, 'big')
     if isinstance(point[0], FQ):
-        point1 = point[0].n.to_bytes(48, 'big')
-        point2 = point[1].n.to_bytes(48, 'big')
+        point1 = point[0].n.to_bytes(32, 'big')
+        point2 = point[1].n.to_bytes(32, 'big')
         return sha256(point1+point2).digest()
     if isinstance(point[0], FQ2):
-        point1 = point[0].coeffs[0].n.to_bytes(48, 'big') + point[0].coeffs[1].n.to_bytes(48, 'big')
-        point2 = point[1].coeffs[0].n.to_bytes(48, 'big') + point[1].coeffs[1].n.to_bytes(48, 'big')
+        point1 = point[0].coeffs[0].n.to_bytes(32, 'big') + point[0].coeffs[1].n.to_bytes(32, 'big')
+        point2 = point[1].coeffs[0].n.to_bytes(32, 'big') + point[1].coeffs[1].n.to_bytes(32, 'big')
         return sha256(point1+point2).digest()
 
 # def to_binary256(point) :
 #     if isinstance(point, str):
 #         return sha256(point.encode("utf8").strip()).digest()
 #     if isinstance(point, int):
-#         return point.to_bytes(48, 'big')
+#         return point.to_bytes(32, 'big')
 #     if isinstance(point[0], FQ):
-#         # point1 = point[0].n.to_bytes(48, 'big')
-#         # point2 = point[1].n.to_bytes(48, 'big')
+#         # point1 = point[0].n.to_bytes(32, 'big')
+#         # point2 = point[1].n.to_bytes(32, 'big')
 #         # return sha256(point1+point2).digest()
 #         g1_point: G1Uncompressed = (FQO(point[0].n),FQO(point[1].n), FQO(1))
 #         return sha256(i2osp(compress_G1(g1_point),48)).digest()
