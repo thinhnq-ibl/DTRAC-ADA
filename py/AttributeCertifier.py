@@ -160,6 +160,7 @@ params = ttp_setup(q-1, args.title) # exclude r.
 ca_file_path = os.path.join(ca_path, "params.pickle")
 f = open(ca_file_path,'wb')
 json_params = jsonpickle.encode(params)
+print("json_params", json_params)
 pickle.dump(json_params, f)
 f.close()
 
