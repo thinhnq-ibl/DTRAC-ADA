@@ -70,11 +70,14 @@ def debug_zkpok():
     print(f"Function and manual responses match: {total_rm[0] == rm_manual}")
     
     print("\n--- Manual VerifyZKPoK ---")
-    
+    tmp_comm = multiply(hs[1], encoded_attr[1])
+	# for i in range(2, len(hs)):
+	# 	tmp_comm = add(tmp_comm, multiply(hs[i], encoded_attr[i-1]))
+    tmp_comm = add(comm, neg(tmp_comm))
     # Manual verification
     verify_witness = multiply(g, total_rm[0][-1])  # randomness response
     verify_witness = add(verify_witness, multiply(hs[0], total_rm[0][0]))  # attribute response
-    verify_witness = add(verify_witness, multiply(comm, c))  # challenge * commitment
+    verify_witness = add(verify_witness, multiply(tmp_comm, c))  # challenge * commitment
     
     print(f"Verify witness: {verify_witness}")
     
@@ -89,7 +92,7 @@ def debug_zkpok():
     print(f"Verification challenges match: {c == c_verify}")
     
     # Verify proof using function - pass only the attributes WITHOUT randomness
-    original_attr = encoded_attr[:-1]  # Remove the randomness we added
+    original_attr = encoded_attr[1:len(encoded_attr)-1]  # Remove the randomness we added
     result = VerifyZKPoK(params, prev_params, prev_vcerts, original_attr, comm, proof)
     print(f"Function verification result: {result}")
 
