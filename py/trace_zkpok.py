@@ -9,11 +9,12 @@ def trace_zkpok():
     print("=== Tracing ZKPoK step by step ===")
     
     # Setup
-    params = ttp_setup(5, "test_ttp")
+    params = ttp_setup(2, "test_ttp")
     _, g, o, hs = params
     h = hs[0]  # Use first hash generator
     
     # Original attribute and randomness
+    attr_msk = 1000
     attr_value = 42
     randomness = 100
     
@@ -67,7 +68,7 @@ def trace_zkpok():
     print(f"\n=== Testing with TTP functions ===")
     
     # Create encoded attributes (attribute + randomness)
-    encoded_attr = [attr_value, randomness]
+    encoded_attr = [attr_msk, attr_value, randomness]
     all_enc_attr = [encoded_attr]
     
     # Generate commitment using function
