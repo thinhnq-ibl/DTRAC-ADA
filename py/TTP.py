@@ -138,7 +138,7 @@ def VerifyZKPoK(params, prev_params, prev_vcerts, encoded_attr, comm, ZKPoK):
 	
 	print("old c", c)
 	print ("new C",toChallenge(element_list) % o)
-	return True
+	return (c == toChallenge(element_list) % o)
 
 def SignCommitment(params, sk, comm):
 	G, g, o, hs= params
