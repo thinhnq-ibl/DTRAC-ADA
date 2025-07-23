@@ -46,6 +46,7 @@ def encode_attributes(attr, encode_str):
 
 def GenCommitment(params, encoded_attr):
 	_, g, o, hs = params 
+	print(len(encoded_attr), len(hs))
 	Aw = [multiply(hs[i], encoded_attr[i]) for i in range(len(hs))]
 	comm = multiply(g, encoded_attr[len(hs)])
 	for i in range(0, len(Aw)):
@@ -69,6 +70,7 @@ def GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm):
 	total_wm = [[random.randint(2, o) for _ in range(len(all_enc_attr[i]))] for i in range(len(all_enc_attr))]
 	for i in range(1, len(total_wm)):
 		total_wm[i][0] = total_wm[0][0]
+	print("total_wm", total_wm)
 	Aw = []
 	comm_list = []
 	for i in range(len(prev_vcerts)):
@@ -78,12 +80,11 @@ def GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm):
 			tmp = add(tmp, multiply(ttp_hs[j], total_wm[i][j]))
 		Aw.append(tmp)
 		comm_list.append(prev_vcerts[i][0])
-
-	
+    
 	_tmp = multiply(g, total_wm[len(prev_vcerts)][-1])
-	print("_tmp1", _tmp)
+	print("_tmp1", _tmp, total_wm[len(prev_vcerts)][-1])
 	_tmp = add(_tmp, multiply(hs[0], total_wm[len(prev_vcerts)][0]))
-	print("_tmp2", _tmp)
+	print("_tmp2", _tmp, total_wm[len(prev_vcerts)][0])
 	Aw.append(_tmp)
 	comm_list.append(comm)
 
@@ -105,6 +106,8 @@ def VerifyZKPoK(params, prev_params, prev_vcerts, encoded_attr, comm, ZKPoK):
 
 	tmp_comm = multiply(hs[1], encoded_attr[0])
 
+	print("encoded_attr", encoded_attr)
+
 	for i in range(2, len(hs)):
 		tmp_comm = add(tmp_comm, multiply(hs[i], encoded_attr[i-1]))
 	tmp_comm = add(comm, neg(tmp_comm))
@@ -124,11 +127,11 @@ def VerifyZKPoK(params, prev_params, prev_vcerts, encoded_attr, comm, ZKPoK):
 
 	_, g, o, hs= params
 	_tmp = multiply(g, total_rm[len(prev_vcerts)][-1])
-	print("_tmp3", _tmp)
+	print("_tmp3", _tmp, total_rm[len(prev_vcerts)][-1])
 	_tmp = add(_tmp, multiply(hs[0], total_rm[len(prev_vcerts)][0]))
-	print("_tmp4", _tmp)
+	print("_tmp4", _tmp, total_rm[len(prev_vcerts)][0])
 	_tmp = add(_tmp, multiply(tmp_comm,c))
-	print("_tmp5", _tmp)
+	print("_tmp5", _tmp, tmp_comm,c)
 	Aw.append(_tmp)
 	comm_list.append(comm)
 
@@ -138,7 +141,7 @@ def VerifyZKPoK(params, prev_params, prev_vcerts, encoded_attr, comm, ZKPoK):
 	
 	print("old c", c)
 	print ("new C",toChallenge(element_list) % o)
-	return True
+	return (c == toChallenge(element_list) % o)
 
 def SignCommitment(params, sk, comm):
 	G, g, o, hs= params
