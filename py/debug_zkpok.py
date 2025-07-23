@@ -8,12 +8,12 @@ def debug_zkpok():
     print("Debugging Zero-Knowledge Proof functions...")
     
     # Setup parameters
-    params = ttp_setup(5, "test_ttp")
+    params = ttp_setup(2, "test_ttp")
     _, g, o, hs = params
     
     # Create some test attributes with just one for simplicity
-    attr = ["Alice"]
-    encode_str = [1]  # Hash the attribute
+    attr = [1000, "Alice"]
+    encode_str = [2,1]  # Hash the attribute
     encoded_attr = encode_attributes(attr, encode_str)
     
     # Add randomness parameter for the commitment
