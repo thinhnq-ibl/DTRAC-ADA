@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from py_ecc.bls12_381 import *
+from py_ecc.bn128 import *
 from TTP import *
 import random
 
@@ -8,12 +8,12 @@ def debug_zkpok():
     print("Debugging Zero-Knowledge Proof functions...")
     
     # Setup parameters
-    params = ttp_setup(5, "test_ttp")
+    params = ttp_setup(2, "test_ttp")
     _, g, o, hs = params
     
     # Create some test attributes with just one for simplicity
-    attr = ["Alice"]
-    encode_str = [1]  # Hash the attribute
+    attr = [100, "Alice"]
+    encode_str = [2,1]  # Hash the attribute
     encoded_attr = encode_attributes(attr, encode_str)
     
     # Add randomness parameter for the commitment
@@ -70,14 +70,21 @@ def debug_zkpok():
     print(f"Function and manual responses match: {total_rm[0] == rm_manual}")
     
     print("\n--- Manual VerifyZKPoK ---")
-    
+    tmp_comm = multiply(hs[1], encoded_attr[1])
+
+
+	# for i in range(2, len(hs)):
+	# 	tmp_comm = add(tmp_comm, multiply(hs[i], encoded_attr[i-1]))
+    tmp_comm = add(comm, neg(tmp_comm))
     # Manual verification
     verify_witness = multiply(g, total_rm[0][-1])  # randomness response
     verify_witness = add(verify_witness, multiply(hs[0], total_rm[0][0]))  # attribute response
-    verify_witness = add(verify_witness, multiply(comm, c))  # challenge * commitment
+    verify_witness = add(verify_witness, multiply(tmp_comm, c))  # challenge * commitment
     
     print(f"Verify witness: {verify_witness}")
     
+ 
+
     # Create verification element list
     verify_Aw = [verify_witness]
     verify_comm_list = [comm]
@@ -89,7 +96,8 @@ def debug_zkpok():
     print(f"Verification challenges match: {c == c_verify}")
     
     # Verify proof using function - pass only the attributes WITHOUT randomness
-    original_attr = encoded_attr[:-1]  # Remove the randomness we added
+    original_attr = encoded_attr[1:len(encoded_attr)-1]  # Remove the randomness we added
+    print("original_attr", original_attr)
     result = VerifyZKPoK(params, prev_params, prev_vcerts, original_attr, comm, proof)
     print(f"Function verification result: {result}")
 

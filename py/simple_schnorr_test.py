@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from py_ecc.bls12_381 import *
+from py_ecc.bn128 import *
 from TTP import toChallenge
 import random
 
