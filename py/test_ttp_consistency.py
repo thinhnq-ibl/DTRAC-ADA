@@ -9,7 +9,7 @@ def test_with_ttp_generators():
     print("=== Testing with TTP hash generators ===")
     
     # Use TTP setup
-    params = ttp_setup(5, "test_ttp")
+    params = ttp_setup(2, "test_ttp")
     _, g, o, hs = params
     h = hs[0]  # First hash generator from TTP
     
@@ -17,11 +17,12 @@ def test_with_ttp_generators():
     print(f"Hash generator h: {h}")
     
     # Use simple values
+    attr_msk = 1000
     attr_value = 42
     randomness = 100
     
     # Create encoded attributes as TTP expects
-    encoded_attr = [attr_value, randomness]
+    encoded_attr = [attr_msk, attr_value, randomness]
     
     # Generate commitment using TTP function
     commitment = GenCommitment(params, encoded_attr)
