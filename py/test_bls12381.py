@@ -23,7 +23,7 @@ def test_basic_functions():
     print(f"hashG1 test: {h}")
     
     # Test TTP setup
-    params = ttp_setup(3, "test_ttp")
+    params = ttp_setup(5, "test_ttp")
     print(f"TTP setup test: {len(params)} parameters")
     
     return params
@@ -32,12 +32,12 @@ def test_zkpok():
     print("\nTesting Zero-Knowledge Proof functions...")
     
     # Setup parameters
-    params = ttp_setup(5, "test_ttp")
+    params = ttp_setup(4, "test_ttp")
     _, g, o, hs = params
     
     # Create some test attributes
-    attr = ["Alice", "25", "Engineer", "100000"]
-    encode_str = [1, 0, 1, 0]  # Hash first and third attributes
+    attr = [1000, "Alice", 25, "Engineer"]
+    encode_str = [0, 1, 0, 1]  # Hash first and third attributes
     encoded_attr = encode_attributes(attr, encode_str)
     
     # Add randomness parameter for the commitment
