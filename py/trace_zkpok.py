@@ -22,18 +22,21 @@ def trace_zkpok():
     print(f"Randomness: {randomness}")
     
     # Commitment: C = g^randomness * h^attribute
-    commitment = add(multiply(g, randomness), multiply(h, attr_value))
+    commitment = add(multiply(g, randomness), multiply(h, attr_msk))
+    commitment = add(commitment, multiply(hs[1], attr_value))
     print(f"Commitment: {commitment}")
     
     # Witness values
+    w_msk = 100
     w_attr = 55
     w_rand = 77
     
+    print(f"Witness for msk: {w_msk}")
     print(f"Witness for attribute: {w_attr}")
     print(f"Witness for randomness: {w_rand}")
     
     # Witness commitment: W = g^w_rand * h^w_attr
-    witness = add(multiply(g, w_rand), multiply(h, w_attr))
+    witness = add(multiply(g, w_rand), multiply(h, w_msk))
     print(f"Witness commitment: {witness}")
     
     # Challenge from hash
@@ -42,23 +45,23 @@ def trace_zkpok():
     print(f"Challenge: {challenge}")
     
     # Responses
-    resp_attr = (w_attr - challenge * attr_value) % o
+    resp_attr = (w_msk - challenge * attr_msk) % o
     resp_rand = (w_rand - challenge * randomness) % o
     
     print(f"Response for attribute: {resp_attr}")
     print(f"Response for randomness: {resp_rand}")
     
     # Verification: g^resp_rand * h^resp_attr * C^challenge = W
-    verify_point = add(add(multiply(g, resp_rand), multiply(h, resp_attr)), multiply(commitment, challenge))
+    verify_point = add(add(multiply(g, resp_rand), multiply(h, resp_attr)), multiply(add(commitment, neg(multiply(hs[1], attr_value))), challenge))
     print(f"Verification point: {verify_point}")
     print(f"Original witness: {witness}")
     print(f"Verification successful: {verify_point == witness}")
     
     # Manual algebra check
     print(f"\n=== Algebra Check ===")
-    print(f"resp_attr + challenge * attr_value = {resp_attr} + {challenge} * {attr_value} = {(resp_attr + challenge * attr_value) % o}")
+    print(f"resp_attr + challenge * attr_value = {resp_attr} + {challenge} * {attr_msk} = {(resp_attr + challenge * attr_msk) % o}")
     print(f"Should equal w_attr = {w_attr}")
-    print(f"Attribute algebra correct: {(resp_attr + challenge * attr_value) % o == w_attr}")
+    print(f"Attribute algebra correct: {(resp_attr + challenge * attr_msk) % o == w_msk}")
     
     print(f"resp_rand + challenge * randomness = {resp_rand} + {challenge} * {randomness} = {(resp_rand + challenge * randomness) % o}")  
     print(f"Should equal w_rand = {w_rand}")

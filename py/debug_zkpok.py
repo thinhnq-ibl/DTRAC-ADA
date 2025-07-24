@@ -65,7 +65,7 @@ def debug_zkpok():
     print(f"Function and manual challenges match: {c == c_manual}")
     
     # Manual response computation
-    rm_manual = [(total_wm[0][j] - ((c*all_enc_attr[0][j]) % o)) % o for j in range(len(total_wm[0]))]
+    rm_manual = [(total_wm[0][j] - c*all_enc_attr[0][j]) % o for j in range(len(total_wm[0]))]
     print(f"Manual response: {rm_manual}")
     print(f"Function and manual responses match: {total_rm[0] == rm_manual}")
     
@@ -74,8 +74,7 @@ def debug_zkpok():
     for i in range(2, len(hs)):
        tmp_comm = add(tmp_comm, multiply(hs[i], encoded_attr[i-1]))
     tmp_comm = add(comm, neg(tmp_comm))
-    # tmp_comm = multiply(g, all_enc_attr[0][2])
-    # tmp_comm = add (tmp_comm, multiply(hs[0], all_enc_attr[0][0]))
+
     # Manual verification
     verify_witness = multiply(g, total_rm[0][-1])  # randomness response
     verify_witness = add(verify_witness, multiply(hs[0], total_rm[0][0] ) ) # attribute response
