@@ -76,7 +76,7 @@ def GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm):
 	# use same key for many certificate
 	for i in range(1, len(total_wm)):
 		total_wm[i][0] = total_wm[0][0]
-		
+	
 	Aw = []
 	comm_list = []
 	for i in range(len(prev_vcerts)):
