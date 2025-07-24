@@ -367,7 +367,6 @@ def BlindSignAttr(params, sk, Lambda, public_m=[]):
     #work from here in thr afternoon.
     # assert verify_pi_o(params, commitments, C, cm, hidden_P, h_r, b_o, aggr_vk, opk, pi_o)
     # issue signature
-    print("*****verify_pi_s************************")
     h = hashG1(to_binary256(cm))
     t1 = [multiply(h, mi) for mi in public_m]
     t2 = add(multiply(h, x), ec_sum([multiply(bi, yi) for yi,bi in zip(y, commitments+t1)]))

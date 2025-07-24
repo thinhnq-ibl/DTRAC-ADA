@@ -52,7 +52,6 @@ def encode_attributes(attr, encode_str):
 
 def GenCommitment(params, encoded_attr):
 	_, g, o, hs = params 
-	print(len(encoded_attr), len(hs))
 	Aw = [multiply(hs[i], encoded_attr[i]) for i in range(len(hs))]
 	comm = multiply(g, encoded_attr[len(hs)])
 	for i in range(0, len(Aw)):
@@ -77,7 +76,7 @@ def GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm):
 	# use same key for many certificate
 	for i in range(1, len(total_wm)):
 		total_wm[i][0] = total_wm[0][0]
-	print("total_wm", total_wm)
+		
 	Aw = []
 	comm_list = []
 	for i in range(len(prev_vcerts)):
@@ -89,18 +88,14 @@ def GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm):
 		comm_list.append(prev_vcerts[i][0])
     
 	_tmp = multiply(g, total_wm[len(prev_vcerts)][-1])
-	print("_tmp1", _tmp, total_wm[len(prev_vcerts)][-1])
 	_tmp = add(_tmp, multiply(hs[0], total_wm[len(prev_vcerts)][0]))
-	print("_tmp2", _tmp, total_wm[len(prev_vcerts)][0])
 	Aw.append(_tmp)
 	comm_list.append(comm)
 
 	element_list = [g] + Aw + comm_list + hs 
-	print("Aw", Aw)
 
 	c = toChallenge(element_list) % o
-	print("genc", c)
-	total_rm = [[(total_wm[i][j] - (c*all_enc_attr[i][j] %o) ) % o for j in range(len(total_wm[i]))] for i in range(len(total_wm))]
+	total_rm = [[(total_wm[i][j] - c*all_enc_attr[i][j] ) % o for j in range(len(total_wm[i]))] for i in range(len(total_wm))]
 	return (c, total_rm)
 
 def VerifyZKPoK(params, prev_params, prev_vcerts, encoded_attr, comm, ZKPoK):
@@ -112,8 +107,6 @@ def VerifyZKPoK(params, prev_params, prev_vcerts, encoded_attr, comm, ZKPoK):
 	_, g, o, hs= params
 
 	tmp_comm = multiply(hs[1], encoded_attr[0])
-
-	print("encoded_attr", encoded_attr)
 
 	for i in range(2, len(hs)):
 		tmp_comm = add(tmp_comm, multiply(hs[i], encoded_attr[i-1]))
@@ -130,24 +123,14 @@ def VerifyZKPoK(params, prev_params, prev_vcerts, encoded_attr, comm, ZKPoK):
 		Aw.append(tmp)
 		comm_list.append(prev_vcerts[i][0])
 
-	
-
 	_, g, o, hs= params
 	_tmp = multiply(g, total_rm[len(prev_vcerts)][-1])
-	print("_tmp3", _tmp, total_rm[len(prev_vcerts)][-1])
 	_tmp = add(_tmp, multiply(hs[0], total_rm[len(prev_vcerts)][0]))
-	print("_tmp4", _tmp, total_rm[len(prev_vcerts)][0])
 	_tmp = add(_tmp, multiply(tmp_comm,c))
-	print("_tmp5", _tmp, tmp_comm,c)
 	Aw.append(_tmp)
 	comm_list.append(comm)
 
 	element_list = [g]+ Aw + comm_list + hs
-	
-	print("Aw_new", Aw)
-	
-	print("old c", c)
-	print ("new C",toChallenge(element_list) % o)
 	return (c == toChallenge(element_list) % o)
 
 def SignCommitment(params, sk, comm):
