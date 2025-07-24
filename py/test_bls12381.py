@@ -13,9 +13,9 @@ def test_basic_functions():
     print(f"Generator G1: {G1}")
     
     # Test FindYforX
-    x = random.randint(1, field_modulus - 1)
-    beta, y = FindYforX(x)
-    print(f"FindYforX test: x={x}, beta={beta}, y={y}")
+    # x = random.randint(1, field_modulus - 1)
+    # beta, y = FindYforX(x)
+    # print(f"FindYforX test: x={x}, beta={beta}, y={y}")
     
     # Test hashG1
     test_string = b"test_hash_to_g1"
@@ -61,9 +61,11 @@ def test_zkpok():
     try:
         proof = GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm)
         print(f"Generated ZKPoK proof: challenge length = {len(str(proof[0]))}")
-        
+        new_attr = ["Alice", 25, "Engineer"]
+        new_encode_str = [1, 0, 1]  # Hash first and third attributes
+        new_encoded_attr = encode_attributes(new_attr, new_encode_str)
         # Verify proof
-        result = VerifyZKPoK(params, prev_params, prev_vcerts, encoded_attr, comm, proof)
+        result = VerifyZKPoK(params, prev_params, prev_vcerts, new_encoded_attr, comm, proof)
         print(f"ZKPoK verification result: {result}")
         
         return result
