@@ -6,20 +6,26 @@ def genRandom():
 	o = int(curve_order)
 	return random.randint(2, o)
 
-def FindYforX(x) :
-    beta = (pow(x, 3, field_modulus) + 4) % field_modulus
-    y = pow(beta, (field_modulus + 1) //4, field_modulus)
-    return (beta, y)
+# def FindYforX(x) :
+#     beta = (pow(x, 3, field_modulus) + 4) % field_modulus
+#     y = pow(beta, (field_modulus + 1) //4, field_modulus)
+#     return (beta, y)
+
+# def hashG1(byte_string):
+# 	o = int(curve_order)
+# 	beta = 0
+# 	y = 0
+# 	x = int.from_bytes(byte_string, "big") % o
+# 	while True :
+# 		(beta, y) = FindYforX(x)
+# 		if beta == pow(y, 2, field_modulus) :
+# 			return (FQ(x), FQ(y))
+# 		x = (x + 1) % field_modulus
 
 def hashG1(byte_string):
-    beta = 0
-    y = 0
-    x = int.from_bytes(byte_string, "big") % curve_order
-    while True :
-        (beta, y) = FindYforX(x)
-        if beta == pow(y, 2, field_modulus) :
-            return (FQ(x), FQ(y))
-        x = (x + 1) % field_modulus
+    h = sha256(byte_string).digest()
+    x = int.from_bytes(h, 'big') % curve_order
+    return multiply(G1, x)
 
 def ttp_setup(q, ttp):
 	assert q > 0
@@ -68,6 +74,7 @@ def SHA256(element):
 def GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm):
 	_, g, o, hs= params
 	total_wm = [[random.randint(2, o) for _ in range(len(all_enc_attr[i]))] for i in range(len(all_enc_attr))]
+	# use same key for many certificate
 	for i in range(1, len(total_wm)):
 		total_wm[i][0] = total_wm[0][0]
 	print("total_wm", total_wm)
@@ -93,7 +100,7 @@ def GenZKPoK(params, prev_params, prev_vcerts, all_enc_attr, comm):
 
 	c = toChallenge(element_list) % o
 	print("genc", c)
-	total_rm = [[(total_wm[i][j] - c*all_enc_attr[i][j]) % o for j in range(len(total_wm[i]))] for i in range(len(total_wm))]
+	total_rm = [[(total_wm[i][j] - (c*all_enc_attr[i][j] %o) ) % o for j in range(len(total_wm[i]))] for i in range(len(total_wm))]
 	return (c, total_rm)
 
 def VerifyZKPoK(params, prev_params, prev_vcerts, encoded_attr, comm, ZKPoK):

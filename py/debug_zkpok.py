@@ -17,7 +17,7 @@ def debug_zkpok():
     encoded_attr = encode_attributes(attr, encode_str)
     
     # Add randomness parameter for the commitment
-    randomness = random.randint(1, o - 1)
+    randomness = random.randint(2, o)
     encoded_attr.append(randomness)
     
     print(f"Encoded attributes: {encoded_attr}")
@@ -65,21 +65,30 @@ def debug_zkpok():
     print(f"Function and manual challenges match: {c == c_manual}")
     
     # Manual response computation
-    rm_manual = [(total_wm[0][j] - c*all_enc_attr[0][j]) % o for j in range(len(total_wm[0]))]
+    rm_manual = [(total_wm[0][j] - ((c*all_enc_attr[0][j]) % o)) % o for j in range(len(total_wm[0]))]
     print(f"Manual response: {rm_manual}")
     print(f"Function and manual responses match: {total_rm[0] == rm_manual}")
     
     print("\n--- Manual VerifyZKPoK ---")
     tmp_comm = multiply(hs[1], encoded_attr[1])
-	# for i in range(2, len(hs)):
-	# 	tmp_comm = add(tmp_comm, multiply(hs[i], encoded_attr[i-1]))
+    for i in range(2, len(hs)):
+       tmp_comm = add(tmp_comm, multiply(hs[i], encoded_attr[i-1]))
     tmp_comm = add(comm, neg(tmp_comm))
+    # tmp_comm = multiply(g, all_enc_attr[0][2])
+    # tmp_comm = add (tmp_comm, multiply(hs[0], all_enc_attr[0][0]))
     # Manual verification
     verify_witness = multiply(g, total_rm[0][-1])  # randomness response
-    verify_witness = add(verify_witness, multiply(hs[0], total_rm[0][0]))  # attribute response
-    verify_witness = add(verify_witness, multiply(tmp_comm, c))  # challenge * commitment
-    
-    print(f"Verify witness: {verify_witness}")
+    verify_witness = add(verify_witness, multiply(hs[0], total_rm[0][0] ) ) # attribute response
+    verify_witness = add(verify_witness, multiply((tmp_comm), c))  # challenge * commitment
+    print(hs, g)
+    a = multiply(g, total_wm[0][-1])
+    b = add( multiply(g, ((total_wm[0][-1] % o - c * all_enc_attr[0][-1]))%o), multiply(multiply(g, all_enc_attr[0][-1] %o),c))
+    print("a ? b: ", a == b)
+    cc = multiply(hs[0], total_wm[0][0])
+    dd = add( multiply(hs[0], ((total_wm[0][0] %o - c * all_enc_attr[0][0]))%o), multiply(multiply(hs[0], all_enc_attr[0][0] %o),c))
+    print("c ? d: ", cc == dd)
+
+    print(f"Verify witness: {verify_witness == witness_comm}")
     
     # Create verification element list
     verify_Aw = [verify_witness]
