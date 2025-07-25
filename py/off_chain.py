@@ -22,6 +22,9 @@ from py_ecc.fields import (
 ##################################
 ## create vcert
 ##################################
+
+# Identity Certificate
+
 # Set a fixed seed for reproducible testing
 random.seed(12345)
 msk = genRandom()
@@ -81,6 +84,53 @@ new_encode_str = [1,2]
 new_encoded_attribute = encode_attributes(new_attribute, new_encode_str)
 verify_zkp = VerifyZKPoK(params, prevParams, prevVcerts, new_encoded_attribute, commit, zkpok)
 print ("verify_zkp", verify_zkp)
+signature = SignCommitment(params, sk, commit)
+
+# Income Certificate
+msk2 = genRandom()
+schema2 = {}
+encoding2 = {}
+schemaOrder2 = []
+
+key = "msk"
+schemaOrder2.append(key)
+schema2.setdefault(key, {"type" : encoding_type_map["2"], "visibility": "private"})
+encoding2.setdefault(key, 2)
+
+key = "salary"
+schemaOrder2.append(key)
+schema2.setdefault(key, {"type" : encoding_type_map["2"], "visibility": "private"})
+encoding2.setdefault(key, 2)
+
+key = "r"
+schemaOrder2.append(key)
+schema2.setdefault(key, {"type" : encoding_type_map["2"], "visibility": "private"})
+encoding2.setdefault(key, 2)
+
+q2 = len(schemaOrder2)
+
+args2 = {}
+args2.setdefault("title", "Income Certificate" )
+
+params2 = ttp_setup(q2-1, args2["title"]) # exclude r.
+pk2, sk2 = ttpKeyGen(params2)
+
+r2 = genRandom()
+attribute2 = [msk, 10000, r2]
+encode_str2 = [2,2,2]
+
+encoded_attribute2 = encode_attributes(attribute2, encode_str2)
+commit2 = GenCommitment(params2, encoded_attribute2)
+
+prevAttributes2 = [encoded_attribute]
+prevAttributes2.append([encoded_attribute2[0], encoded_attribute2[-1]])
+
+prevParams2 = [params]
+prevVcerts2 = [(commit, signature)]
+zkpok2 = GenZKPoK(params2, prevParams2, prevVcerts2, prevAttributes2, commit2)
+verify_zkp2 = VerifyZKPoK(params2, prevParams2, prevVcerts2, [10000], commit2, zkpok2)
+print ("verify_zkp2", verify_zkp2)
+signature2 = SignCommitment(params2, sk2, commit2)
 
 # # Identity Certificate
 # vcert_title = "Identity Certificate"
