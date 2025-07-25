@@ -611,6 +611,7 @@ def ReceivePartialCredentials(title, issue_filter, signs, os):
 	assert credential_id != 0, "No such AC."
 	aggregate_vk = getAggregateVerificationKey(title)
 	tv = getTotalValidators(title)
+	tv = 0
 	signs_count = 0
 	while True: 
 		signature_log = issue_filter.get_new_entries()
@@ -662,14 +663,6 @@ def getAttributes(title, vcerts, combination, public_m = []):
 			attributes[key] = public_m[i]
 			i += 1
 	return attributes
-
-
-
-
-
-
-
-
 
 def RequestService(credential, user_addr):
 	title = credential["title"]
