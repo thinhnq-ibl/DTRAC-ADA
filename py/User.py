@@ -12,7 +12,6 @@ import socket
 import json
 from web3 import Web3
 
-from TTP import *
 from py_ecc_tester import *
 
 
