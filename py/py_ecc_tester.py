@@ -214,7 +214,7 @@ def make_pi_s(params, commitments, cm, os, r, public_m, private_m, all_attr, pre
     # rm = [(wm[i] - c*attributes[i]) % o for i in range(len(wm))]
     return (c, rr, ros, total_rm)
 
-def verify_pi_s(params, commitments, cm, prevParams, prevVcerts, proof):
+def verify_pi_s(params, commitments, cm, prevParams, prevVcerts, proof, include_indexes):
     """ verify correctness of ciphertext and cm """
     (G, o, g1, hs, g2, e) = params
 

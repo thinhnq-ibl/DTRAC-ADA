@@ -643,8 +643,7 @@ def getAttributes(title, vcerts, combination, public_m = []):
 	for key in schemaOrder:
 		attributes.setdefault(key, None)
 
-	include_indexes = [[1,0,0,1],[1,0,1]] 
-	# getIncludeIndexes(title, combination)
+	include_indexes = getIncludeIndexes(title, combination)
 	for i in range(len(combination)):
 		CASchemaOrder = downloadSchemaOrder(combination[i])
 		print("CASchemaOrder", CASchemaOrder)
