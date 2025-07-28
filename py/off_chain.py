@@ -249,14 +249,21 @@ credential["credential"] = aggr_sig
 verify_proof = verify_pi_s(validator_params, commitments, cm, prevParams, prevVcerts, pi_s_old, include_indexes)
 print("Verify pi_s: ", verify_proof)
 
-# print("sending for verification")
-# str_public_m = [str(public_m[i]) for i in range(len(public_m))]
-# #only place where request smart contract is called from User 
-# st = time.time()
-# # tx_hash = request_contract.functions.RequestCred(title, send_vcerts, send_cm, send_compressed_cipher, send_hp, send_hr, send_bo, pi_s, pi_o, send_compressed_G2Points, str_public_m).transact({'from':user_addr})
-# et = time.time()
-# print("Time for Verification at Smart Contract is:",et-st)
-# return Lambda, os
+disclose_index = [0,0]
+disclose_attr = []
+disclose_attr_enc = []
+encoded_private_m = [19980512, 100000]
+encoded_public_m = []
+# proving the possession of AC (Off-chain by user) private_m, disclose_index, disclose_attr, disclose_attr_enc, public_m
+Theta, aggr = ProveCred(validator_params, aggregate_vk, aggr_sig, encoded_private_m, disclose_index, disclose_attr, disclose_attr_enc, encoded_public_m)
+(kappa, nu, rand_sig, proof, Aw, _timestamp) = Theta
+# Aw, _timestamp, proof = proof_v
+encoded_disclosed_attr = []
+#Sending to SP_verify for verifying the proof. 
+# SP_RequestService(credential, user_addr,disclose_index,aggr_sig,Theta,encoded_disclosed_attr,encoded_public_m,aggregate_vk)
+tf = VerifyCred(validator_params, aggregate_vk, Theta, disclose_index, encoded_disclosed_attr, encoded_public_m)
+print("Verify Cred : ",tf)
+print(tf)
 
 # # Identity Certificate
 # vcert_title = "Identity Certificate"
@@ -628,9 +635,10 @@ print("Verify pi_s: ", verify_proof)
 # encoded_public_m.append(encoded_attribute[1])
 # encoded_public_m.append(encoded_attribute[2])
 # encoded_public_m.append(encoded_attribute_income[1])
-# disclose_index = [1, 1,1,1]
+# disclose_index = [0,0]
 # disclose_attr = [private_m[i] for i in range(len(private_m)) if disclose_index[i]==1]
 # disclose_attr_enc = [ac_encode_str[i] for i in range(len(ac_encode_str)) if disclose_index[i]==1]
+# disclose_attr = []
 # # proving the possession of AC (Off-chain by user) private_m, disclose_index, disclose_attr, disclose_attr_enc, public_m
 # Theta, aggr = ProveCred(params, aggregate_vk, aggr_sig, encoded_private_m, disclose_index, disclose_attr, disclose_attr_enc, encoded_public_m)
 # (kappa, nu, rand_sig, proof, Aw, _timestamp) = Theta
