@@ -81,7 +81,7 @@ sleep 5
 command7='python3 ProtocolInitiator_AnonymousCredentials.py --title "Loan Credential" --address 0xE279a5e0DEb02eDe68876bea8206EeFb2Ab0E96C --validator-addresses 0x444D3aa9426Ca8e339d607bF53262A8B524B844e 0x2D0B894312087b3BF55e4432871b6FD3CC8c180A 0x5126e167868d403dba7DbC5a28bA0e5ACbb086C0 --opener-addresses 0x202870f3671F1d6B401693FBcF66082781D1958F 0x34aB8f91ef8524a9eCF47D2eC6ab1DBdC3a2D704 0xdedCA5790B8899dA5168a4D34b171A8294D0Fb5F --rpc-endpoint "http://127.0.0.1:7545"'
 
 gnome-terminal --title="ProtocolInitiator_AnonymousCredentials" -- bash -c "source $VENV_ACTIVATE && $command7;"
-sleep 5
+sleep 10
 
 ############### ############################################## #####################################################
 

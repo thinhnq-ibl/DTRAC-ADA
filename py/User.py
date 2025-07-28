@@ -720,6 +720,7 @@ def RequestService(credential, user_addr):
 	aggregate_vk = getAggregateVerificationKey(title)
 
 	# proving the possession of AC (Off-chain by user) private_m, disclose_index, disclose_attr, disclose_attr_enc, public_m
+	print("noooo", encoded_private_m, disclose_index, disclose_attr, disclose_attr_enc, encoded_public_m)
 	Theta, aggr = ProveCred(params, aggregate_vk, aggr_sig, encoded_private_m, disclose_index, disclose_attr, disclose_attr_enc, encoded_public_m)
 	(kappa, nu, rand_sig, proof, Aw, _timestamp) = Theta
 	#Aw, _timestamp, proof = proof_v
@@ -737,7 +738,7 @@ def RequestService(credential, user_addr):
 
 	str_public_m = [str(public_m[i]) for i in range(len(public_m))]
 	encoded_disclosed_attr = encode_attributes(disclose_attr, disclose_attr_enc)
-	print(params, aggregate_vk, Theta, disclose_index, encoded_disclosed_attr, encoded_public_m)
+	
 	tf = VerifyCred(params, aggregate_vk, Theta, disclose_index, encoded_disclosed_attr, encoded_public_m)
 	print("Verify Cred : ")
 	print(tf)

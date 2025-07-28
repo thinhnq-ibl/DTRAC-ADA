@@ -62174,27 +62174,18 @@
     "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
   },
   "networks": {
-    "1753694453966": {
+    "1753697435382": {
       "events": {},
       "links": {
-        "G": "0x840407F422a3B776E3464933988527f18cCA0205",
-        "BN256G2": "0x6eD008B65D9b6250F0f415497c86abE921749c47"
+        "G": "0x3dcA2483c249f25078B2930064545aefaDCfdb04",
+        "BN256G2": "0x346EdA1152f7dbea06bDe63b303d491e0A645906"
       },
-      "address": "0x37b495514722a93Dcef556b1E4ea0E25e88Ad5fF",
-      "transactionHash": "0x89218081650f703004f8bab43bd632582612f9bc33d9c725e632f4ac2446cf00"
-    },
-    "1753695086037": {
-      "events": {},
-      "links": {
-        "G": "0xdbCf80eDC3aa14257b4Cee97a3356698A6aaD86E",
-        "BN256G2": "0x7568498BfBE72E6a47917720A2cE25B63D60F399"
-      },
-      "address": "0x47AE61C0DeF9356a603fFdca7C09F2A50a7e8dD9",
-      "transactionHash": "0x1fb540450d10fbc33ee76f1a7990b9f97d9dc16ca4966f7cceb3acc6f88d802c"
+      "address": "0x51e50f12Aa755068A8136e68069075778B6118EE",
+      "transactionHash": "0xbfc454de3c4fdd95b25428fd166d2b0f986210abe13416490233996a7175b1e7"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-07-28T09:55:48.352Z",
+  "updatedAt": "2025-07-28T10:31:38.348Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

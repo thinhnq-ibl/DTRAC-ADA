@@ -406,6 +406,7 @@ def getCAIpPort(title):
 
 def openingThread():
 	credential_id = params_contract.functions.getMapCredentials(args.title).call()
+	print(credential_id, args.title)
 	assert credential_id != 0, "No such AC."
 	opening_filter = opening_contract.events.emitOpening.create_filter(from_block="0x0", to_block='latest')
 	aggregate_vk = getAggregateVerificationKey(args.title)

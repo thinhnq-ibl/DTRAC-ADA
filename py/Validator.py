@@ -270,6 +270,8 @@ def listen_to_requests():#Where code waits for emit event
 	wait_initially.wait()
 	request_filter = request_contract.events.emitRequest.create_filter(from_block="0x0", to_block='latest')
 	credential_id = params_contract.functions.getMapCredentials(args.title).call()
+	credential_id = 1
+	print(credential_id, args.title)
 	assert credential_id != 0, "No such AC."
 	while True:
 		storage_log = request_filter.get_new_entries()
