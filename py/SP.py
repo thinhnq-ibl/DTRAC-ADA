@@ -171,8 +171,8 @@ for cur_title in acceptable_ACs:
 		if tmp == 'no' or tmp == 'n':
 			break
 
-	# tx_hash = verify_contract.functions.setPolicy(cur_title, policy).transact({'from':SP_addr})
-	# w3.eth.wait_for_transaction_receipt(tx_hash)
+	tx_hash = verify_contract.functions.setPolicy(cur_title, policy).transact({'from':SP_addr})
+	w3.eth.wait_for_transaction_receipt(tx_hash)
 
 pending_service_requests = []
 pending_requests_lock = threading.Lock()
@@ -231,7 +231,7 @@ listen_thread = threading.Thread(target = listen_to_service_requests)
 listen_thread.start()
 
 while True:
-	time.sleep(20)
+	time.sleep(10)
 	pending_requests_lock.acquire()
 	pending_requests_count = len(pending_service_requests)
 	pending_requests_lock.release()

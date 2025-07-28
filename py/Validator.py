@@ -270,7 +270,6 @@ def listen_to_requests():#Where code waits for emit event
 	wait_initially.wait()
 	request_filter = request_contract.events.emitRequest.create_filter(from_block="0x0", to_block='latest')
 	credential_id = params_contract.functions.getMapCredentials(args.title).call()
-	credential_id = 1
 	assert credential_id != 0, "No such AC."
 	while True:
 		storage_log = request_filter.get_new_entries()
@@ -332,7 +331,7 @@ listen_thread.start()
 print("sleeping")
 
 while True:
-	time.sleep(120)
+	time.sleep(10)
 	vks = loadValidatorKeys(args.title)
 	opks = loadOpenerKeys(args.title)
 	if None in vks or None in opks:
@@ -343,7 +342,7 @@ while True:
 		break
 
 while True:
-	time.sleep(20)
+	time.sleep(10)
 	pending_requests_lock.acquire()
 	pending_requests_count = len(pending_requests)
 	pending_requests_lock.release()

@@ -381,7 +381,6 @@ ac_title = input("Enter the anonymous credentials title that you want to request
 
 while True:
 	#time.sleep(15) Commented as it is unncessary waiting
-	ac_title = "Loan Credential"
 	vks = loadValidatorKeys(ac_title)
 	opks = loadOpenerKeys(ac_title)
 	if None in vks or None in opks:
@@ -496,7 +495,6 @@ def checkCombinations(title, combination):
 	return False
 
 def getIncludeIndexes(title, _dependency):
-	title = "Loan Credential"
 	ac_path = os.path.join(root_dir, title)
 	ac_file_path = os.path.join(ac_path, "include_indexes.pickle")
 	f = open(ac_file_path,'rb')
@@ -580,7 +578,7 @@ def CredentialRequest(title, vcerts, combination, public_m = []): #should be enc
 	str_public_m = [str(public_m[i]) for i in range(len(public_m))]
 	#only place where request smart contract is called from User 
 	st = time.time()
-	# tx_hash = request_contract.functions.RequestCred(title, send_vcerts, send_cm, send_compressed_cipher, send_hp, send_hr, send_bo, pi_s, pi_o, send_compressed_G2Points, str_public_m).transact({'from':user_addr})
+	tx_hash = request_contract.functions.RequestCred(title, send_vcerts, send_cm, send_compressed_cipher, send_hp, send_hr, send_bo, pi_s, pi_o, send_compressed_G2Points, str_public_m).transact({'from':user_addr})
 	et = time.time()
 	print("Time for Verification at Smart Contract is:",et-st)
 	return Lambda, os
@@ -607,7 +605,6 @@ def CredentialRequest(title, vcerts, combination, public_m = []): #should be enc
 
 def ReceivePartialCredentials(title, issue_filter, signs, os):
 	credential_id = params_contract.functions.getMapCredentials(title).call()
-	credential_id = 1
 	assert credential_id != 0, "No such AC."
 	aggregate_vk = getAggregateVerificationKey(title)
 	tv = getTotalValidators(title)
@@ -643,8 +640,7 @@ def getAttributes(title, vcerts, combination, public_m = []):
 	for key in schemaOrder:
 		attributes.setdefault(key, None)
 
-	include_indexes = [[1,0,0,1],[1,0,1]] 
-	# getIncludeIndexes(title, combination)
+	include_indexes = getIncludeIndexes(title, combination)
 	for i in range(len(combination)):
 		CASchemaOrder = downloadSchemaOrder(combination[i])
 		print("CASchemaOrder", CASchemaOrder)
@@ -746,13 +742,13 @@ def RequestService(credential, user_addr):
 	print("Verify Cred : ")
 	print(tf)
 	
-	# tx_hash = verify_contract.functions.VerifyCred(title, send_theta, str_public_m, send_Aw, send_aggr, disclose_index, str_disclose_attr, disclose_attr_enc, _timestamp).transact({'from':user_addr})
-	# print("Transaction hash for VerifyCred: ", tx_hash.hex())
+	tx_hash = verify_contract.functions.VerifyCred(title, send_theta, str_public_m, send_Aw, send_aggr, disclose_index, str_disclose_attr, disclose_attr_enc, _timestamp).transact({'from':user_addr})
+	print("Transaction hash for VerifyCred: ", tx_hash.hex())
  
 # -------------------------------------------------------------------------------------------------
 
-# combination = list(map(str, input("Enter a combination you want to use for credential request (Identity Certificate,Income Certificate)").split(",")))
-combination = ["Identity Certificate", "Income Certificate"] # give some input here. like selecting a combination.
+combination = list(map(str, input("Enter a combination you want to use for credential request (Identity Certificate,Income Certificate)").split(",")))
+# combination = ["Identity Certificate", "Income Certificate"] # give some input here. like selecting a combination.
 print(combination)
 print("all_vcerts", all_vcerts)
 vcerts = []

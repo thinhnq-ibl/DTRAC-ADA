@@ -134,7 +134,7 @@ def SP_RequestService(credential, user_addr,disclose_index,aggr_sig,Theta,encode
 	print("Verify Cred : ")
 	print(tf)
 	#off-chain SP verification
-	#tx_hash = verify_contract.functions.VerifyCred(title, send_theta, str_public_m, send_Aw, send_aggr, disclose_index, str_disclose_attr, disclose_attr_enc, _timestamp).transact({'from':user_addr})
+	# tx_hash = verify_contract.functions.VerifyCred(title, send_theta, str_public_m, send_Aw, send_aggr, disclose_index, str_disclose_attr, disclose_attr_enc, _timestamp).transact({'from':user_addr})
 
 def downloadACParams(title):
 	q = getTotalAttributes(title)
