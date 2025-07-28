@@ -252,7 +252,7 @@ print("Verify pi_s: ", verify_proof)
 disclose_index = [0,0]
 disclose_attr = []
 disclose_attr_enc = []
-encoded_private_m = [19980512, 100000]
+encoded_private_m = [19980512, 10000]
 encoded_public_m = []
 # proving the possession of AC (Off-chain by user) private_m, disclose_index, disclose_attr, disclose_attr_enc, public_m
 Theta, aggr = ProveCred(validator_params, aggregate_vk, aggr_sig, encoded_private_m, disclose_index, disclose_attr, disclose_attr_enc, encoded_public_m)
