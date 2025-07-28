@@ -121,7 +121,7 @@ params2 = ttp_setup(q2-1, args2["title"]) # exclude r.
 pk2, sk2 = ttpKeyGen(params2)
 
 r2 = genRandom()
-attribute2 = [msk, 10000, r2]
+attribute2 = [msk, 100000, r2]
 encode_str2 = [2,2,2]
 
 encoded_attribute2 = encode_attributes(attribute2, encode_str2)
@@ -133,7 +133,7 @@ prevAttributes2.append([encoded_attribute2[0], encoded_attribute2[-1]])
 prevParams2 = [params]
 prevVcerts2 = [(commit, signature)]
 zkpok2 = GenZKPoK(params2, prevParams2, prevVcerts2, prevAttributes2, commit2)
-verify_zkp2 = VerifyZKPoK(params2, prevParams2, prevVcerts2, [10000], commit2, zkpok2)
+verify_zkp2 = VerifyZKPoK(params2, prevParams2, prevVcerts2, [100000], commit2, zkpok2)
 print ("verify_zkp2", verify_zkp2)
 signature2 = SignCommitment(params2, sk2, commit2)
 
@@ -146,7 +146,7 @@ vcert2["signature"] = signature2
 ######################################
 
 ac_title = "Loan Credential"
-attributes = {'DOB': 19980512, 'Salary': 10000}
+attributes = {'DOB': 19980512, 'Salary': 100000}
 credential = {"title": ac_title, "attributes" : attributes, "credential": None}
 q = 2
 validator_params = setup(q, ac_title)
@@ -252,7 +252,7 @@ print("Verify pi_s: ", verify_proof)
 disclose_index = [0,0]
 disclose_attr = []
 disclose_attr_enc = []
-encoded_private_m = [19980512, 10000]
+encoded_private_m = [19980512, 100000]
 encoded_public_m = []
 # proving the possession of AC (Off-chain by user) private_m, disclose_index, disclose_attr, disclose_attr_enc, public_m
 Theta, aggr = ProveCred(validator_params, aggregate_vk, aggr_sig, encoded_private_m, disclose_index, disclose_attr, disclose_attr_enc, encoded_public_m)
