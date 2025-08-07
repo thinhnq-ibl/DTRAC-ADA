@@ -15731,10 +15731,16 @@
       "links": {},
       "address": "0xd418bD6B106c20b521C0D88535075eF20142B806",
       "transactionHash": "0x0f1693059b8a37eb4f0b5eabdfe1e1cd1881a08fe22512eb786c30dfb5e027d7"
+    },
+    "1753697435382": {
+      "events": {},
+      "links": {},
+      "address": "0xAE2EF7fFfE5616743ABDA860dbe8ada8887f4ca4",
+      "transactionHash": "0x2e419711c6706942f58d4e0afd0b8580a0e6077cd516dee326276c2a3a91e7bd"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-07-28T04:36:58.356Z",
+  "updatedAt": "2025-07-28T11:00:43.327Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

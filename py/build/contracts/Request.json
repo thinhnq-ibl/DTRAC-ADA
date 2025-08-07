@@ -62182,10 +62182,19 @@
       },
       "address": "0x7c203De106D9C3a7fC5B29F4502Db8dfd68911D0",
       "transactionHash": "0xbef459e9c7fff8dc28414e8a3702dd9cd8e8a5646ab86baef0c8db7131001b48"
+    },
+    "1753697435382": {
+      "events": {},
+      "links": {
+        "G": "0xAE2EF7fFfE5616743ABDA860dbe8ada8887f4ca4",
+        "BN256G2": "0xD55b224070c85365328Ea561099ddB3c93454B1e"
+      },
+      "address": "0xA0E81E8507018A0862c4186D22fA4825686c9F1D",
+      "transactionHash": "0x643c2fc76bc1918b6c37b72ef0710c672e6ed3cd4e0e0b6803a35bff89953152"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-07-28T04:36:58.368Z",
+  "updatedAt": "2025-07-28T11:00:43.345Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

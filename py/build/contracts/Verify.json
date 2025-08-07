@@ -38989,10 +38989,19 @@
       },
       "address": "0x0BE810d3351f798f95714A80ab256555a7aa1534",
       "transactionHash": "0x7a64c4aaf3004102d8f364d06001059379141ac04c08aeebaa7572db5651df6d"
+    },
+    "1753697435382": {
+      "events": {},
+      "links": {
+        "G": "0xAE2EF7fFfE5616743ABDA860dbe8ada8887f4ca4",
+        "BN256G2": "0xD55b224070c85365328Ea561099ddB3c93454B1e"
+      },
+      "address": "0xce910Bfb6dFC4A8272476Dc62855dDDaE72392cA",
+      "transactionHash": "0xbd20db9aeebc2d058e304247aaacb273ffbe461623d02fbe9881019b995fbfb4"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-07-28T04:36:58.405Z",
+  "updatedAt": "2025-07-28T11:00:43.382Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
