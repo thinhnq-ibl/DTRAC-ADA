@@ -302,7 +302,6 @@ def listen_to_requests():#listening to emit events
 	wait_initially.wait()
 	request_filter = request_contract.events.emitRequest.create_filter(from_block="0x0", to_block='latest')
 	credential_id = params_contract.functions.getMapCredentials(args.title).call()
-	credential_id = 1
 	assert credential_id != 0, "No such AC."
 	while True:
 		storage_log = request_filter.get_new_entries()
@@ -407,7 +406,6 @@ def getCAIpPort(title):
 
 def openingThread():
 	credential_id = params_contract.functions.getMapCredentials(args.title).call()
-	credential_id = 1
 	assert credential_id != 0, "No such AC."
 	opening_filter = opening_contract.events.emitOpening.create_filter(from_block="0x0", to_block='latest')
 	aggregate_vk = getAggregateVerificationKey(args.title)
@@ -482,7 +480,7 @@ listen_thread.start()
 print("sleeping")
 
 while True:
-	time.sleep(120)
+	time.sleep(20)
 	vks = loadValidatorKeys(args.title)
 	opks = loadOpenerKeys(args.title)
 	if None in vks or None in opks:
